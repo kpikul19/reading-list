@@ -1,4 +1,5 @@
 import { useState } from "react";
+import axios from 'axios';
 import BookCreate from "./components/BookCreate";
 import BookList from "./components/BookList"
 
@@ -26,15 +27,21 @@ function App() {
         setBooks(updatedBooks);
     };
 
-    const createBook = (title) => {
-        const updatedBooks = [
-            ...books, //copy all the books
-            { 
-                id: Math.round(Math.random() * 999), 
-                title 
-            } // insert new book with random id (ids are usually taken care of by a backend server but we don't have that) and the new title (title is equivalent to title:title because they are the same name)
-        ]
-        setBooks(updatedBooks); //new array with new book added 
+    const createBook = async (title) => {
+        await axios.post('http://localhost:3001/books', {
+            title
+        });
+        
+        console.log(response);
+
+        // const updatedBooks = [
+        //     ...books, //copy all the books
+        //     { 
+        //         id: Math.round(Math.random() * 999), 
+        //         title 
+        //     } // insert new book with random id (ids are usually taken care of by a backend server but we don't have that) and the new title (title is equivalent to title:title because they are the same name)
+        // ]
+        // setBooks(updatedBooks); //new array with new book added 
     };
 
     return (
