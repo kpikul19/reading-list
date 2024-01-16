@@ -1,10 +1,21 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from 'axios';
 import BookCreate from "./components/BookCreate";
 import BookList from "./components/BookList"
 
 function App() {
     const [books, setBooks] = useState([]);
+
+    const fetchBooks = async () =>  {
+
+        const response = await axios.get('http://localhost:3001/books');
+
+        setBooks(response.data);
+    };
+
+    useEffect(() => {
+        fetchBooks();
+    }, []);
 
     const editBookByID = (id, newTitle) => {
         const updatedBooks = books.map((book) => {
@@ -28,20 +39,15 @@ function App() {
     };
 
     const createBook = async (title) => {
-        await axios.post('http://localhost:3001/books', {
+        const response = await axios.post('http://localhost:3001/books', {
             title
         });
-        
-        console.log(response);
 
-        // const updatedBooks = [
-        //     ...books, //copy all the books
-        //     { 
-        //         id: Math.round(Math.random() * 999), 
-        //         title 
-        //     } // insert new book with random id (ids are usually taken care of by a backend server but we don't have that) and the new title (title is equivalent to title:title because they are the same name)
-        // ]
-        // setBooks(updatedBooks); //new array with new book added 
+        const updatedBooks = [
+            ...books, 
+            response.data
+        ];
+        setBooks(updatedBooks); //new array with new book added 
     };
 
     return (
