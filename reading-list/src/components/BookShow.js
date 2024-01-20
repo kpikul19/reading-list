@@ -1,20 +1,21 @@
 import { useState } from "react";
+import useBooksContext from '../hooks/use-books-context';
 import BookEdit from './BookEdit';
 
-function BookShow ( {book, onDelete, onEdit } ) {
+function BookShow ({ book }) {
     const [showEdit, setShowEdit] = useState(false); //make edit form false so it won't show by default
+    const { deleteBookById } = useBooksContext();
 
     const handleDeleteClick = () => {
-        onDelete(book.id);
+        deleteBookById(book.id);
     };
 
     const handleEditClick = () => {
         setShowEdit(!showEdit); //toggle show edit on click
     };
 
-    const handleSubmit = (id, newTitle) => {
+    const handleSubmit = () => {
         setShowEdit(false);
-        onEdit(id, newTitle);
     };
 
     let content = <h3>{book.title}</h3>; //let allows you to change the variable over time, so this is saying by default we will show the book title
